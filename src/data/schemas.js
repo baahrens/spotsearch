@@ -83,7 +83,7 @@ export const userSchema = new mongoose.Schema({
     type: String
   },
   zipCode: {
-    type: String, //TODO maybe regex
+    type: String, // TODO maybe regex
     required: true
   },
   homeSpot: {

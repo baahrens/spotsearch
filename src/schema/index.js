@@ -1,9 +1,6 @@
+import { GraphQLSchema, GraphQLObjectType, GraphQLList } from 'graphql';
+
 import { SpotType } from './types'
-import {
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLList
-} from 'graphql';
 
 const schema = new GraphQLSchema({
   query: new GraphQLObjectType({

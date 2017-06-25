@@ -3,16 +3,16 @@ import graphqlHTTP from 'express-graphql'
 import bodyParser from 'body-parser'
 import debug from 'debug'
 
-const SERVER_PORT = 3000
-const serverDebug = debug('spotsearch:server')
-
 import schema from './schema'
 import './data/database'
+
+const SERVER_PORT = 3000
+const serverDebug = debug('spotsearch:server')
 
 const app = express();
 
 app.use('/graphql', graphqlHTTP({
-  schema: schema,
+  schema,
   graphiql: true
 }));
 

@@ -1,4 +1,3 @@
-import UserType from './userType'
 import {
   GraphQLObjectType,
   GraphQLString,
@@ -6,6 +5,8 @@ import {
   GraphQLList,
   GraphQLInt
 } from 'graphql';
+
+import UserType from './userType'
 
 const LocationType = new GraphQLObjectType({
   name: 'LocationType',

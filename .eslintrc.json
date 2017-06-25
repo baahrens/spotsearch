@@ -1,0 +1,17 @@
+{
+  "extends": "airbnb-base",
+  "plugins": ["babel"],
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "rules": {
+    "semi"                : 0,
+    "comma-dangle"        : ["error", "never"],
+    "arrow-parens"        : ["error", "as-needed"],
+    "key-spacing"         : 0,
+    "max-len"             : [2, 120, 2],
+    "object-curly-spacing": [2, "always"],
+    "no-tabs"             : 1
+  }
+}

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 import debug from 'debug'
-import { spotSchema, userSchema } from './schemas'
+import { spotSchema, userSchema } from './schemas'
 
-const MONGO_URL= 'mongodb://localhost:27017/local'
+const MONGO_URL = 'mongodb://localhost:27017/local'
 const dbDebug = debug('spotsearch:database')
 
 mongoose.connect(MONGO_URL)

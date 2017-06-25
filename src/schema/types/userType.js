@@ -1,11 +1,11 @@
-import SpotType from './spotType'
 import {
   GraphQLObjectType,
   GraphQLString,
   GraphQLID,
-  GraphQLList,
-  GraphQLInt
-} from 'graphql';
+  GraphQLList
+} from 'graphql'
+
+import SpotType from './spotType'
 
 const UserType = new GraphQLObjectType({
   name: 'UserType',

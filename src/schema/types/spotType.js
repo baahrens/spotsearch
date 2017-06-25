@@ -1,6 +1,13 @@
-import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString, GraphQLID, GraphQLList, GraphQLInt } from 'graphql'
+import {
+  GraphQLNonNull,
+  GraphQLInputObjectType,
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLID,
+  GraphQLList,
+  GraphQLInt
+} from 'graphql'
 import { UserType } from './userType'
-import { LocationType, LocationInputType } from './locationType'
 
 export const SpotType = new GraphQLObjectType({
   name: 'SpotType',
@@ -36,7 +43,7 @@ export const SpotType = new GraphQLObjectType({
       type: new GraphQLList(GraphQLString)
     },
     location: {
-      type: LocationType
+      type: new GraphQLList(GraphQLInt)
     }
   })
 })
@@ -54,13 +61,40 @@ export const getSpotsInputType = new GraphQLInputObjectType({
   name: 'getSpotsInputType',
   fields: () => ({
     location: {
-      type: LocationInputType
+      type: new GraphQLList(GraphQLInt)
     },
     filter: {
       type: GraphQLString
     },
     sort: {
       type: GraphQLString
+    }
+  })
+})
+
+export const createSpotInputType = new GraphQLInputObjectType({
+  name: 'createSpotInputType',
+  fields: () => ({
+    title: {
+      type: GraphQLString
+    },
+    attributes: {
+      type: new GraphQLList(GraphQLString)
+    },
+    type: {
+      type: new GraphQLNonNull(GraphQLString)
+    },
+    description: {
+      type: GraphQLString
+    },
+    rating: {
+      type: GraphQLInt
+    },
+    pictures: {
+      type: new GraphQLList(GraphQLString)
+    },
+    location: {
+      type: new GraphQLNonNull(new GraphQLList(GraphQLInt))
     }
   })
 })

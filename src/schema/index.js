@@ -5,23 +5,26 @@ import {
   GraphQLList
 } from 'graphql';
 
-import { SpotType, getSpotsInputType, getSpotInputType, UserType, getUserInputType } from './types'
+import { resolveSpots, resolveSpot, resolveUser, resolveCreateSpot, resolveUpdateSpot } from './resolvers'
+import { SpotType, getSpotsInputType, getSpotInputType, UserType, getUserInputType, createSpotInputType } from './types'
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
     getSpots: {
-      name: 'getSpots',
       type: new GraphQLList(SpotType),
-      args: getSpotsInputType.getFields()
+      args: getSpotsInputType.getFields(),
+      resolve: resolveSpots
     },
     getSpot: {
       type: SpotType,
-      args: getSpotInputType.getFields()
+      args: getSpotInputType.getFields(),
+      resolve: resolveSpot
     },
     getUser: {
       type: UserType,
-      args: getUserInputType.getFields()
+      args: getUserInputType.getFields(),
+      resolve: resolveUser
     }
   }
 })
@@ -30,10 +33,16 @@ const RootMutation = new GraphQLObjectType({
   name: 'RootMutationType',
   fields: {
     createSpot: {
-      type: SpotType
+      type: SpotType,
+      args: createSpotInputType.getFields(),
+      resolve: (root, data) => resolveCreateSpot({
+        ...data,
+        author: 'some'
+      })
     },
     updateSpot: {
-      type: SpotType
+      type: SpotType,
+      resolve: resolveUpdateSpot
     },
     removeSpot: {
       type: GraphQLBoolean

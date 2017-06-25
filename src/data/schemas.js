@@ -1,36 +1,12 @@
 import mongoose from 'mongoose'
 
-const locationSchema = new mongoose.Schema({
-  type: {
-    type: String,
-    required: true,
-    enum: ['Point', 'LineString', 'Polygon'],
-    default: 'Point'
-  },
-  coordinates: {
-    type: [Number],
-    index: '2d'
-  }
-})
-
-export const spotSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    unique: true
-  },
+const spotSchema = new mongoose.Schema({
   title: {
     type: String
   },
   author: {
     type: String,
     required: true
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updateAt: {
-    type: Date
   },
   attributes: {
     type: [String]
@@ -50,14 +26,19 @@ export const spotSchema = new mongoose.Schema({
   pictures: {
     type: [String]
   },
-  location: locationSchema
+  location: {
+    type: [Number],
+    index: '2d'
+  }
+}, { timestamps: true })
+
+spotSchema.virtual('id').get(function () {
+  return this._id.toHexString()
 })
 
-export const userSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    unique: true
-  },
+spotSchema.set('toObject', { getters: true })
+
+const userSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
@@ -93,4 +74,12 @@ export const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+}, { timestamps: true })
+
+userSchema.virtual('id').get(function () {
+  return this._id.toHexString()
 })
+
+spotSchema.set('toObject', { getters: true })
+
+export { spotSchema, userSchema }

@@ -1,2 +1,13 @@
-export { default as SpotType } from './spotType'
-export { default as UserType } from './userType'
+import { UserType, getUserInputType } from './userType'
+import { SpotType, getSpotInputType, getSpotsInputType } from './spotType'
+import { LocationType, LocationInputType } from './locationType'
+
+export {
+  LocationType,
+  LocationInputType,
+  SpotType,
+  getSpotInputType,
+  getSpotsInputType,
+  UserType,
+  getUserInputType
+}

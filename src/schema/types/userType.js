@@ -1,13 +1,7 @@
-import {
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLID,
-  GraphQLList
-} from 'graphql'
+import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString, GraphQLID, GraphQLList } from 'graphql'
+import { SpotType } from './spotType'
 
-import SpotType from './spotType'
-
-const UserType = new GraphQLObjectType({
+export const UserType = new GraphQLObjectType({
   name: 'UserType',
   fields: () => ({
     id: {
@@ -46,4 +40,11 @@ const UserType = new GraphQLObjectType({
   })
 })
 
-export default UserType
+export const getUserInputType = new GraphQLInputObjectType({
+  name: 'getUserInputType',
+  fields: {
+    id: {
+      type: GraphQLID
+    }
+  }
+})

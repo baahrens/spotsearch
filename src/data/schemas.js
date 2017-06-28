@@ -44,6 +44,9 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true
   },
+  password: {
+    type: String
+  },
   fistName: {
     type: String
   },
@@ -80,6 +83,8 @@ userSchema.virtual('id').get(function () {
   return this._id.toHexString()
 })
 
-spotSchema.set('toObject', { getters: true })
+userSchema.methods.checkPassword = function (password) {
+  return this.password === password
+}
 
 export { spotSchema, userSchema }

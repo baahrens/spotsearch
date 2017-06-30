@@ -2,14 +2,19 @@ import mongoose from 'mongoose'
 import debug from 'debug'
 import { spotSchema, userSchema } from './schemas'
 
+// The mongo url
+// will change in the future
 const MONGO_URL = 'mongodb://localhost:27017/local'
 const dbDebug = debug('spotsearch:database')
 
+// use ES6 promises
 mongoose.Promise = global.Promise
 
+// connect to the DB
 mongoose.connect(MONGO_URL)
 const db = mongoose.connection;
 
+// Create our models, using the schemata specified in './schema'
 export const Spots = db.model('spot', spotSchema)
 export const Users = db.model('user', userSchema)
 

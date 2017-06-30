@@ -1,6 +1,17 @@
-import { GraphQLInputObjectType, GraphQLObjectType, GraphQLString, GraphQLID, GraphQLList } from 'graphql'
+import {
+  GraphQLNonNull,
+  GraphQLInputObjectType,
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLID,
+  GraphQLList
+} from 'graphql'
+
 import { SpotType } from './spotType'
 
+// The schema representation of a user
+// Uses all fields from the Mongoose Schema
+// TODO: resolvers
 export const UserType = new GraphQLObjectType({
   name: 'UserType',
   fields: () => ({
@@ -40,11 +51,12 @@ export const UserType = new GraphQLObjectType({
   })
 })
 
+// If want to get a specific user, we just need an ID at this point
 export const getUserInputType = new GraphQLInputObjectType({
   name: 'getUserInputType',
   fields: {
     id: {
-      type: GraphQLID
+      type: new GraphQLNonNull(GraphQLID)
     }
   }
 })

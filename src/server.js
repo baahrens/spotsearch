@@ -7,25 +7,28 @@ import jwt from 'express-jwt'
 import schema from './schema'
 import './data/database'
 
-const SERVER_PORT = 3000
+export const SERVER_PORT = 3000
+export const JWT_SECRET = 'somethin secret' // TODO: move this to ENV or use pubKey
+
 const serverDebug = debug('spotsearch:server')
 
 const app = express();
 
+// this is the only route at this point
+// and at the same time the GraphQL endpoint
+// JWT (JSONWebToken) is used for authentication
 app.use('/',
-  jwt({
-    secret: 'some secret',
-    credentialsRequired: false
-  }),
-  graphql(req => ({
+  jwt({ secret: JWT_SECRET, credentialsRequired: false }),
+  graphql(({ user }) => ({
     schema,
     graphiql: true,
-    context: { user: req.user }
+    context: { user }
   }))
 )
 
 app.use(bodyParser.text({ type: 'application/graphql' }));
 
+// start the server
 app.listen(SERVER_PORT, () => {
   serverDebug(`Server running on port ${SERVER_PORT}`)
 });

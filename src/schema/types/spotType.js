@@ -9,6 +9,9 @@ import {
 } from 'graphql'
 import { UserType } from './userType'
 
+// The schema representation of a spot
+// Uses all fields from the Mongoose Schema
+// TODO: resolvers
 export const SpotType = new GraphQLObjectType({
   name: 'SpotType',
   fields: () => ({
@@ -48,15 +51,19 @@ export const SpotType = new GraphQLObjectType({
   })
 })
 
+// If want to get a specific spot, we just need an ID at this point
 export const getSpotInputType = new GraphQLInputObjectType({
   name: 'getSpotInputType',
   fields: {
     id: {
-      type: GraphQLID
+      type: new GraphQLNonNull(GraphQLID)
     }
   }
 })
 
+// All fields that can be specified by the client
+// for searching, filtering and sorting the spots
+// must be listed here
 export const getSpotsInputType = new GraphQLInputObjectType({
   name: 'getSpotsInputType',
   fields: () => ({
@@ -72,6 +79,9 @@ export const getSpotsInputType = new GraphQLInputObjectType({
   })
 })
 
+// Every value that can be specified by the client
+// to create a spot must be listed here
+// If a value is required, we need to use GraphQLNonNull()
 export const createSpotInputType = new GraphQLInputObjectType({
   name: 'createSpotInputType',
   fields: () => ({

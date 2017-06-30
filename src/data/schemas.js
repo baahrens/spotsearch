@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 
+// the actual database schema for a spot
 const spotSchema = new mongoose.Schema({
   title: {
     type: String
@@ -32,12 +33,15 @@ const spotSchema = new mongoose.Schema({
   }
 }, { timestamps: true })
 
+// this is a convinience function so we don't have to deal with the underscore
+// on the client. Maps '_id' to 'id'
 spotSchema.virtual('id').get(function () {
   return this._id.toHexString()
 })
 
 spotSchema.set('toObject', { getters: true })
 
+// the actual database schema for a user
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -79,10 +83,12 @@ const userSchema = new mongoose.Schema({
   }
 }, { timestamps: true })
 
+// see above
 userSchema.virtual('id').get(function () {
   return this._id.toHexString()
 })
 
+// function that can be called on every user
 userSchema.methods.checkPassword = function (password) {
   return this.password === password
 }

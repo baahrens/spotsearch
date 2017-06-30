@@ -1,9 +1,11 @@
 import {
   GraphQLString,
   GraphQLObjectType,
-  GraphQLInputObjectType
+  GraphQLInputObjectType,
+  GraphQLNonNull
 } from 'graphql'
 
+// This represents the token, a user gets if authentication was successful
 export const TokenType = new GraphQLObjectType({
   name: 'TokenType',
   fields: {
@@ -13,14 +15,15 @@ export const TokenType = new GraphQLObjectType({
   }
 })
 
+// Filds needed for authenticating
 export const authenticateInputType = new GraphQLInputObjectType({
   name: 'authenticateInputType',
   fields: {
     email: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     },
     password: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     }
   }
 })

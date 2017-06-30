@@ -26,6 +26,13 @@ import {
   authenticateInputType
 } from './types'
 
+// The root query endpoint
+// this icludes all functions for getting data
+// like getting a spot or a user
+// Every query has:
+//  - a return value ('type')
+//  - allowed arguments ('args')
+//  - a resolve funcion ('resolve')
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
@@ -47,6 +54,9 @@ const RootQuery = new GraphQLObjectType({
   }
 })
 
+// The root mutation endpoint
+// this includes all functions for posting data
+// like authenticating, creating a spot or updating your profile
 const RootMutation = new GraphQLObjectType({
   name: 'RootMutationType',
   fields: {
@@ -73,6 +83,7 @@ const RootMutation = new GraphQLObjectType({
   }
 })
 
+// The root schema used in server.js
 const schema = new GraphQLSchema({
   query: RootQuery,
   mutation: RootMutation

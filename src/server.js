@@ -1,6 +1,5 @@
 import express from 'express'
 import graphql from 'express-graphql'
-import bodyParser from 'body-parser'
 import debug from 'debug'
 import jwt from 'express-jwt'
 
@@ -17,16 +16,19 @@ const app = express();
 // this is the only route at this point
 // and at the same time the GraphQL endpoint
 // JWT (JSONWebToken) is used for authentication
+// credentialsRequired is set to false because there are endpoints
+// you can reach without being authenticated (getSpots etc) so we check for the user
+// in the resolvers
 app.use('/',
   jwt({ secret: JWT_SECRET, credentialsRequired: false }),
   graphql(({ user }) => ({
     schema,
     graphiql: true,
+    // context is passed to every resolver function
+    // we pass the user, as we need to validate authentication in some resolvers
     context: { user }
   }))
 )
-
-app.use(bodyParser.text({ type: 'application/graphql' }));
 
 // start the server
 app.listen(SERVER_PORT, () => {

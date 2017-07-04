@@ -72,13 +72,16 @@ const RootMutation = new GraphQLObjectType({
     },
     updateSpot: {
       type: SpotType,
+      // TODO
       resolve: resolveUpdateSpot
     },
     removeSpot: {
       type: GraphQLBoolean
+      // TODO
     },
     updateUser: {
       type: UserType
+      // TODO
     }
   }
 })

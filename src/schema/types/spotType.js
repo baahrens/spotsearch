@@ -7,11 +7,11 @@ import {
   GraphQLList,
   GraphQLInt
 } from 'graphql'
+import { resolveSpotAuthor } from '../resolvers'
 import { UserType } from './userType'
 
 // The schema representation of a spot
 // Uses all fields from the Mongoose Schema
-// TODO: resolvers
 export const SpotType = new GraphQLObjectType({
   name: 'SpotType',
   fields: () => ({
@@ -22,7 +22,8 @@ export const SpotType = new GraphQLObjectType({
       type: GraphQLString
     },
     author: {
-      type: UserType
+      type: UserType,
+      resolve: resolveSpotAuthor
     },
     createdAt: {
       type: GraphQLString
@@ -51,7 +52,7 @@ export const SpotType = new GraphQLObjectType({
   })
 })
 
-// If want to get a specific spot, we just need an ID at this point
+// If we want to get a specific spot, we just need an ID at this point
 export const getSpotInputType = new GraphQLInputObjectType({
   name: 'getSpotInputType',
   fields: {
@@ -64,6 +65,7 @@ export const getSpotInputType = new GraphQLInputObjectType({
 // All fields that can be specified by the client
 // for searching, filtering and sorting the spots
 // must be listed here
+// TODO allowed values for filtering/sorting
 export const getSpotsInputType = new GraphQLInputObjectType({
   name: 'getSpotsInputType',
   fields: () => ({

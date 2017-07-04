@@ -19,12 +19,12 @@ const db = mongoose.connection;
 export const Spot = db.model('spot', spotSchema)
 export const User = db.model('user', userSchema)
 
-createFixtures(Spot, User)
-
 db.on('error', error => {
   dbDebug(`Error connecting to Mongo: ${error}`)
 })
 
 db.once('open', () => {
   dbDebug(`Connected to Mongo on ${MONGO_URL}`)
+  dbDebug('Inserting test data...')
+  createFixtures(Spot, User)
 })

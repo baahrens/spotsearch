@@ -32,5 +32,6 @@ app.use('/',
 
 // start the server
 app.listen(SERVER_PORT, () => {
-  serverDebug(`Server running on port ${SERVER_PORT}`)
+  serverDebug('Server started!')
+  serverDebug(`URL: http://localhost:${SERVER_PORT}`)
 });

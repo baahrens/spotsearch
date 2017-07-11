@@ -19,8 +19,8 @@ export default (Spot, User) => {
       Spot.create({
         title: casual.title,
         author: user.id,
-        attributes: casual.random_element(['Stairs', 'Kicker', 'Pool']),
-        type: casual.random_element(['Street', 'Park']),
+        attributes: casual.random_element(['STAIRS', 'KICKER', 'POOL']),
+        type: casual.random_element(['STREET', 'PARK']),
         description: casual.text,
         rating: casual.integer(0, 5),
         pictures: [casual.url],

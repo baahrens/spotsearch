@@ -4,10 +4,35 @@ import jwt from 'jsonwebtoken'
 import { Spot, User } from '../../data/database'
 import { JWT_SECRET } from '../../server'
 
+const defaultFilter = {
+  minRating: 0,
+  maxRating: 5,
+  radius: 50,
+  type: ['STREET', 'PARK'], // TODO: constant file for things like this
+  attributes: ['STAIRS', 'POOL', 'KICKER'] // TODO: same
+}
+
 // these functions tell GraphQL how to resolve a specific type
 // and get it from the database
+export const resolveSpots = (root, { filter }) => {
+  const mergedFilters = { ...defaultFilter, ...filter }
 
-export const resolveSpots = () => Spot.find()
+  const mongooseFilter = {
+    rating: {
+      $gte: mergedFilters.minRating,
+      $lte: mergedFilters.maxRating
+    },
+    // radius: { }, // TODO: How would we do this? GeoQuery?
+    type: {
+      $in: mergedFilters.type
+    },
+    attributes: {
+      $in: mergedFilters.attributes
+    }
+  }
+
+  return Spot.find(mongooseFilter)
+}
 
 export const resolveSpot = id => Spot.findOne({ id })
 

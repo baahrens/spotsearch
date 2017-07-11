@@ -5,10 +5,28 @@ import {
   GraphQLString,
   GraphQLID,
   GraphQLList,
-  GraphQLInt
+  GraphQLInt,
+  GraphQLEnumType
 } from 'graphql'
 import { resolveSpotAuthor } from '../resolvers'
-import { UserType } from './userType'
+import { UserType, getUserInputType } from './userType'
+
+export const spotAttributesType = new GraphQLEnumType({
+  name: 'SpotAttributesType',
+  values: {
+    flat: { value: 'STAIRS' },
+    pool: { value: 'POOL' },
+    kicker: { value: 'KICKER' }
+  }
+})
+
+export const spotTypeType = new GraphQLEnumType({
+  name: 'SpotTypeType',
+  values: {
+    street: { value: 'STREET' },
+    park: { value: 'PARK' }
+  }
+})
 
 // The schema representation of a spot
 // Uses all fields from the Mongoose Schema
@@ -35,7 +53,7 @@ export const SpotType = new GraphQLObjectType({
       type: new GraphQLList(GraphQLString)
     },
     type: {
-      type: GraphQLString
+      type: spotTypeType
     },
     description: {
       type: GraphQLString
@@ -73,10 +91,22 @@ export const getSpotsInputType = new GraphQLInputObjectType({
       type: new GraphQLList(GraphQLInt)
     },
     filter: {
-      type: GraphQLString
-    },
-    sort: {
-      type: GraphQLString
+      type: new GraphQLInputObjectType({
+        name: 'SpotsFilterType',
+        fields: () => ({
+          minRating: { type: GraphQLInt },
+          maxRating: { type: GraphQLInt },
+          location: { type: new GraphQLList(GraphQLInt) },
+          radius: { type: GraphQLInt },
+          type: { type: new GraphQLList(spotTypeType) },
+          attributes: { type: new GraphQLList(spotAttributesType) },
+          author: { type: new GraphQLList(getUserInputType) },
+          title: { type: GraphQLString },
+          createdAt: { type: GraphQLString },
+          updatedAt: { type: GraphQLString },
+          city: { type: GraphQLString }
+        })
+      })
     }
   })
 })

@@ -100,7 +100,7 @@ export const getSpotsInputType = new GraphQLInputObjectType({
           radius: { type: GraphQLInt },
           type: { type: new GraphQLList(spotTypeType) },
           attributes: { type: new GraphQLList(spotAttributesType) },
-          author: { type: new GraphQLList(getUserInputType) },
+          authors: { type: new GraphQLList(GraphQLString) },
           title: { type: GraphQLString },
           createdAt: { type: GraphQLString },
           updatedAt: { type: GraphQLString },

@@ -32,15 +32,17 @@ export const resolveSpots = (root, { location, filter }) => {
     }
   }
 
+  const locationQuery = {
+    $near: location,
+    $maxDistance: radius
+  }
+
   // Mongo doesn't support geo seach and text search at the same time,
   // so if the user specified a title, we'll use that, otherwise use the location
   if (mergedFilters.title) mongooseFilter.$text = { $search: mergedFilters.title }
-  else {
-    mongooseFilter.location = {
-      $near: location,
-      $maxDistance: radius
-    }
-  }
+  else mongooseFilter.location = locationQuery
+
+  if (mergedFilters.authors) mongooseFilter.author = { $in: mergedFilters.authors }
 
   return Spot.find(mongooseFilter)
 }

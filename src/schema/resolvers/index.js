@@ -14,20 +14,25 @@ const defaultFilter = {
 
 // these functions tell GraphQL how to resolve a specific type
 // and get it from the database
-export const resolveSpots = (root, { filter }) => {
-  const mergedFilters = { ...defaultFilter, ...filter }
+export const resolveSpots = (root, { location, filter }) => {
+  const mergedFilters = { ...defaultFilter, ...filter } // Merge the user filters with our default ones above
+
+  const radius = mergedFilters.radius * 1000 // Mongo works with meters TODO: do we support miles?
 
   const mongooseFilter = {
     rating: {
       $gte: mergedFilters.minRating,
       $lte: mergedFilters.maxRating
     },
-    // radius: { }, // TODO: How would we do this? GeoQuery?
     type: {
       $in: mergedFilters.type
     },
     attributes: {
       $in: mergedFilters.attributes
+    },
+    location: {
+      $near: location,
+      $maxDistance: radius
     }
   }
 

@@ -6,7 +6,8 @@ import {
   GraphQLID,
   GraphQLList,
   GraphQLInt,
-  GraphQLEnumType
+  GraphQLEnumType,
+  GraphQLFloat
 } from 'graphql'
 import { resolveSpotAuthor } from '../resolvers'
 import { UserType, getUserInputType } from './userType'
@@ -65,7 +66,7 @@ export const SpotType = new GraphQLObjectType({
       type: new GraphQLList(GraphQLString)
     },
     location: {
-      type: new GraphQLList(GraphQLInt)
+      type: new GraphQLList(GraphQLFloat)
     }
   })
 })
@@ -88,7 +89,7 @@ export const getSpotsInputType = new GraphQLInputObjectType({
   name: 'getSpotsInputType',
   fields: () => ({
     location: {
-      type: new GraphQLList(GraphQLInt)
+      type: new GraphQLList(GraphQLFloat)
     },
     filter: {
       type: new GraphQLInputObjectType({
@@ -96,7 +97,6 @@ export const getSpotsInputType = new GraphQLInputObjectType({
         fields: () => ({
           minRating: { type: GraphQLInt },
           maxRating: { type: GraphQLInt },
-          location: { type: new GraphQLList(GraphQLInt) },
           radius: { type: GraphQLInt },
           type: { type: new GraphQLList(spotTypeType) },
           attributes: { type: new GraphQLList(spotAttributesType) },
@@ -136,7 +136,7 @@ export const createSpotInputType = new GraphQLInputObjectType({
       type: new GraphQLList(GraphQLString)
     },
     location: {
-      type: new GraphQLNonNull(new GraphQLList(GraphQLInt))
+      type: new GraphQLNonNull(new GraphQLList(GraphQLFloat))
     }
   })
 })

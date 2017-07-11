@@ -41,6 +41,10 @@ spotSchema.virtual('id').get(function () {
 
 spotSchema.set('toObject', { getters: true })
 
+spotSchema.index({
+  title: 'text'
+})
+
 // the actual database schema for a user
 const userSchema = new mongoose.Schema({
   email: {

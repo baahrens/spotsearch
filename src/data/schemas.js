@@ -10,7 +10,8 @@ export const spotAttributeValues = [
 // the actual database schema for a spot
 const spotSchema = new mongoose.Schema({
   title: {
-    type: String
+    type: String,
+    required: true
   },
   author: {
     type: String,
@@ -37,7 +38,8 @@ const spotSchema = new mongoose.Schema({
   },
   location: {
     type: [Number],
-    index: '2d'
+    index: '2d',
+    required: true
   }
 }, { timestamps: true })
 

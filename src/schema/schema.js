@@ -68,7 +68,7 @@ const RootMutation = new GraphQLObjectType({
     createSpot: {
       type: SpotType,
       args: createSpotInputType.getFields(),
-      resolve: resolveCreateSpot
+      resolve: needsAuth(resolveCreateSpot)
     },
     updateSpot: {
       type: SpotType,

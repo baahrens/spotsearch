@@ -41,7 +41,7 @@ export const SpotType = new GraphQLObjectType({
       type: GraphQLString
     },
     author: {
-      type: UserType,
+      type: new GraphQLNonNull(UserType),
       resolve: resolveSpotAuthor
     },
     createdAt: {
@@ -54,7 +54,7 @@ export const SpotType = new GraphQLObjectType({
       type: new GraphQLList(GraphQLString)
     },
     type: {
-      type: spotTypeType
+      type: new GraphQLNonNull(spotTypeType)
     },
     description: {
       type: GraphQLString
@@ -66,7 +66,7 @@ export const SpotType = new GraphQLObjectType({
       type: new GraphQLList(GraphQLString)
     },
     location: {
-      type: new GraphQLList(GraphQLFloat)
+      type: new GraphQLNonNull(new GraphQLList(GraphQLFloat))
     }
   })
 })
@@ -89,7 +89,7 @@ export const getSpotsInputType = new GraphQLInputObjectType({
   name: 'getSpotsInputType',
   fields: () => ({
     location: {
-      type: new GraphQLList(GraphQLFloat)
+      type: new GraphQLNonNull(new GraphQLList(GraphQLFloat))
     },
     filter: {
       type: new GraphQLInputObjectType({
@@ -118,13 +118,13 @@ export const createSpotInputType = new GraphQLInputObjectType({
   name: 'createSpotInputType',
   fields: () => ({
     title: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     },
     attributes: {
-      type: new GraphQLList(GraphQLString)
+      type: spotAttributesType
     },
     type: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: new GraphQLNonNull(spotTypeType)
     },
     description: {
       type: GraphQLString

@@ -91,6 +91,9 @@ export const getSpotsInputType = new GraphQLInputObjectType({
     location: {
       type: new GraphQLNonNull(new GraphQLList(GraphQLFloat))
     },
+    limit: {
+      type: GraphQLInt
+    },
     filter: {
       type: new GraphQLInputObjectType({
         name: 'SpotsFilterType',

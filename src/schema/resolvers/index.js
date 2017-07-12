@@ -13,12 +13,13 @@ const defaultFilter = {
   attributes: spotAttributeValues
 }
 
-export const resolveSpots = (root, { location, filter }) => {
+const buildQuery = (location, filter) => {
   const mergedFilters = { ...defaultFilter, ...filter } // Merge the user filters with our default ones above
+
 
   const radius = mergedFilters.radius * 1000 // Mongo works with meters TODO: do we support miles?
 
-  const mongooseFilter = {
+  const resultQuery = {
     rating: {
       $gte: mergedFilters.minRating, // gte = greater than or equal
       $lte: mergedFilters.maxRating  // lte = lower than or equal
@@ -38,12 +39,21 @@ export const resolveSpots = (root, { location, filter }) => {
 
   // Mongo doesn't support geo seach and text search at the same time,
   // so if the user specified a title, we'll use that, otherwise use the location
-  if (mergedFilters.title) mongooseFilter.$text = { $search: mergedFilters.title }
-  else mongooseFilter.location = locationQuery
+  if (mergedFilters.title) resultQuery.$text = { $search: mergedFilters.title }
+  else resultQuery.location = locationQuery
 
-  if (mergedFilters.authors) mongooseFilter.author = { $in: mergedFilters.authors }
+  if (mergedFilters.authors) resultQuery.author = { $in: mergedFilters.authors }
 
-  return Spot.find(mongooseFilter)
+  return resultQuery
+}
+
+export const resolveSpots = (root, { location, filter, limit }) => {
+  const mongooseQuery = buildQuery(location, filter)
+
+  const validLimit = limit <= 100 && limit > 0
+  const limitResult = validLimit ? limit : 20
+
+  return Spot.find(mongooseQuery).limit(limitResult)
 }
 
 export const resolveSpot = (root, { id }) => Spot.findById(id)

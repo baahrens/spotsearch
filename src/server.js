@@ -20,7 +20,11 @@ const app = express();
 // you can reach without being authenticated (getSpots etc) so we check for the user
 // in the resolvers
 app.use('/',
-  jwt({ secret: JWT_SECRET, credentialsRequired: false }),
+  jwt({
+    secret: JWT_SECRET,
+    credentialsRequired: false,
+    getToken: req => req.headers.authentication
+  }),
   graphql(({ user }) => ({
     schema,
     graphiql: true,

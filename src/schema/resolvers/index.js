@@ -46,12 +46,15 @@ export const resolveSpots = (root, { location, filter }) => {
   return Spot.find(mongooseFilter)
 }
 
-export const resolveSpot = id => Spot.findOne({ id })
+export const resolveSpot = (root, { id }) => Spot.findById(id)
 
 export const resolveUser = (root, { id }) => User.findById(id)
 export const resolveSpotAuthor = ({ author }) => User.findById(author)
 
-export const resolveCreateSpot = (root, { data }) => Spot.create(data)
+export const resolveCreateSpot = async (root, args, { user: userId }) => {
+  const user = await User.findOne({ _id: userId })
+  if (user) return Spot.create({ author: user._id, ...args })
+}
 
 export const resolveUpdateSpot = (root, { id, data }) => Spot.update(id, data)
 
@@ -60,15 +63,17 @@ export const resolveUpdateSpot = (root, { id, data }) => Spot.update(id, data)
 export const resolveAuthenticate = async (root, { email, password }) => {
   const user = await User.findOne({ email })
 
-  if (!user || !user.checkPassword(password)) return new GraphQLError('Authentication failed')
+  if (!user) return new GraphQLError('User not found')
 
-  return { token: jwt.sign(user, JWT_SECRET) }
+  if (!user.checkPassword(password)) return new GraphQLError('Authentication failed')
+
+  return { token: jwt.sign(user.id, JWT_SECRET) }
 }
 
 
 // wraps an resolver to check if the user is authenticated and has a valid token
 // returns an error if false
 export const needsAuth = func => (root, args, context) => {
-  if (context.user && jwt.verify(context.user)) return func(root, args, context)
+  if (context.user) return func(root, args, context)
   return new GraphQLError('Not authenticated')
 }

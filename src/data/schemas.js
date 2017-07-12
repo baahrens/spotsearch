@@ -1,5 +1,12 @@
 import mongoose from 'mongoose'
 
+export const spotTypeValues = ['STREET', 'PARK']
+export const spotAttributeValues = [
+  'STAIRS',
+  'POOL',
+  'KICKER'
+]
+
 // the actual database schema for a spot
 const spotSchema = new mongoose.Schema({
   title: {
@@ -14,6 +21,7 @@ const spotSchema = new mongoose.Schema({
   },
   type: {
     type: String,
+    enum: spotTypeValues,
     required: true
   },
   description: {

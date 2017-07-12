@@ -3,17 +3,16 @@ import jwt from 'jsonwebtoken'
 
 import { Spot, User } from '../../data/database'
 import { JWT_SECRET } from '../../server'
+import { spotTypeValues, spotAttributeValues } from '../../data/schemas'
 
 const defaultFilter = {
   minRating: 0,
   maxRating: 5,
   radius: 50,
-  type: ['STREET', 'PARK'], // TODO: constant file for things like this
-  attributes: ['STAIRS', 'POOL', 'KICKER'] // TODO: same
+  type: spotTypeValues,
+  attributes: spotAttributeValues
 }
 
-// these functions tell GraphQL how to resolve a specific type
-// and get it from the database
 export const resolveSpots = (root, { location, filter }) => {
   const mergedFilters = { ...defaultFilter, ...filter } // Merge the user filters with our default ones above
 
@@ -21,8 +20,8 @@ export const resolveSpots = (root, { location, filter }) => {
 
   const mongooseFilter = {
     rating: {
-      $gte: mergedFilters.minRating,
-      $lte: mergedFilters.maxRating
+      $gte: mergedFilters.minRating, // gte = greater than or equal
+      $lte: mergedFilters.maxRating  // lte = lower than or equal
     },
     type: {
       $in: mergedFilters.type

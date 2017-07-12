@@ -10,23 +10,23 @@ import {
   GraphQLFloat
 } from 'graphql'
 import { resolveSpotAuthor } from '../resolvers'
-import { UserType, getUserInputType } from './userType'
+import { UserType } from './userType'
+import { spotTypeValues, spotAttributeValues } from '../../data/schemas'
 
 export const spotAttributesType = new GraphQLEnumType({
   name: 'SpotAttributesType',
-  values: {
-    flat: { value: 'STAIRS' },
-    pool: { value: 'POOL' },
-    kicker: { value: 'KICKER' }
-  }
+  values: spotAttributeValues.reduce((acc, attribute) => {
+    acc[attribute.toLowerCase()] = { value: attribute }
+    return acc
+  }, {})
 })
 
 export const spotTypeType = new GraphQLEnumType({
   name: 'SpotTypeType',
-  values: {
-    street: { value: 'STREET' },
-    park: { value: 'PARK' }
-  }
+  values: spotTypeValues.reduce((acc, type) => {
+    acc[type.toLowerCase()] = { value: type }
+    return acc
+  }, {})
 })
 
 // The schema representation of a spot

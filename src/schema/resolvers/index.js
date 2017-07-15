@@ -1,5 +1,6 @@
 import { GraphQLError } from 'graphql';
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 
 import { Spot, User } from '../../data/database'
 import { JWT_SECRET } from '../../server'
@@ -75,9 +76,19 @@ export const resolveAuthenticate = async (root, { email, password }) => {
 
   if (!user) return new GraphQLError('User not found')
 
-  if (!user.checkPassword(password)) return new GraphQLError('Authentication failed')
+  const valid = await bcrypt.compare(password, user.password)
 
-  return { token: jwt.sign(user.id, JWT_SECRET) }
+  return valid ? { token: jwt.sign(user.id, JWT_SECRET) } : new GraphQLError('Wrong password')
+}
+
+export const resolveRegister = async (root, { email, password }) => {
+  const user = await User.findOne({ email })
+
+  if (user) return new GraphQLError('E-Mail already in use')
+
+  const passwordHash = await bcrypt.hash(password, 10)
+
+  return User.create({ email, password: passwordHash })
 }
 
 

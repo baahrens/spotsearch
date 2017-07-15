@@ -12,7 +12,8 @@ import {
   resolveUser,
   resolveCreateSpot,
   resolveUpdateSpot,
-  resolveAuthenticate
+  resolveAuthenticate,
+  resolveRegister
 } from './resolvers'
 
 import {
@@ -23,7 +24,7 @@ import {
   getSpotInputType,
   getUserInputType,
   createSpotInputType,
-  authenticateInputType
+  authenticateInputType,
 } from './types'
 
 // The root query endpoint
@@ -64,6 +65,11 @@ const RootMutation = new GraphQLObjectType({
       type: TokenType,
       args: authenticateInputType.getFields(),
       resolve: resolveAuthenticate
+    },
+    register: {
+      type: UserType,
+      args: authenticateInputType.getFields(),
+      resolve: resolveRegister
     },
     createSpot: {
       type: SpotType,

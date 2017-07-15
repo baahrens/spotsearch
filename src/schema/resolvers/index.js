@@ -71,14 +71,15 @@ export const resolveUpdateSpot = (root, { id, data }) => Spot.update(id, data)
 
 // work in progress
 // checks user and password for now
-export const resolveAuthenticate = async (root, { email, password }) => {
+export const resolveAuthenticate = async (root, { email, password }, { user: currentUser }) => {
+  if (currentUser) return
+
   const user = await User.findOne({ email })
-
-  if (!user) return new GraphQLError('User not found')
-
   const valid = await bcrypt.compare(password, user.password)
 
-  return valid ? { token: jwt.sign(user.id, JWT_SECRET) } : new GraphQLError('Wrong password')
+  if (!user || !valid) return new GraphQLError('Authentication failed')
+
+  return { token: jwt.sign(user.id, JWT_SECRET) }
 }
 
 export const resolveRegister = async (root, { email, password }) => {

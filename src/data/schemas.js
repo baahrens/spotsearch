@@ -14,7 +14,8 @@ const spotSchema = new mongoose.Schema({
     required: true
   },
   author: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
     required: true
   },
   attributes: {
@@ -89,7 +90,8 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   homeSpot: {
-    type: String
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'spot'
   },
   createdAt: {
     type: Date,

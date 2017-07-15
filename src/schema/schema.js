@@ -6,14 +6,9 @@ import {
 } from 'graphql';
 
 import {
-  needsAuth,
-  resolveSpots,
-  resolveSpot,
-  resolveUser,
-  resolveCreateSpot,
-  resolveUpdateSpot,
-  resolveAuthenticate,
-  resolveRegister
+  UserResolvers,
+  SpotResolvers,
+  AuthResolvers
 } from './resolvers'
 
 import {
@@ -24,7 +19,7 @@ import {
   getSpotInputType,
   getUserInputType,
   createSpotInputType,
-  authenticateInputType,
+  authenticateInputType
 } from './types'
 
 // The root query endpoint
@@ -40,17 +35,17 @@ const RootQuery = new GraphQLObjectType({
     getSpots: {
       type: new GraphQLList(SpotType),
       args: getSpotsInputType.getFields(),
-      resolve: resolveSpots
+      resolve: SpotResolvers.findAll
     },
     getSpot: {
       type: SpotType,
       args: getSpotInputType.getFields(),
-      resolve: resolveSpot
+      resolve: SpotResolvers.findOne
     },
     getUser: {
       type: UserType,
       args: getUserInputType.getFields(),
-      resolve: needsAuth(resolveUser)
+      resolve: AuthResolvers.needsAuth(UserResolvers.findOne)
     }
   }
 })
@@ -64,22 +59,22 @@ const RootMutation = new GraphQLObjectType({
     authenticate: {
       type: TokenType,
       args: authenticateInputType.getFields(),
-      resolve: resolveAuthenticate
+      resolve: AuthResolvers.authenticate
     },
     register: {
       type: UserType,
       args: authenticateInputType.getFields(),
-      resolve: resolveRegister
+      resolve: AuthResolvers.register
     },
     createSpot: {
       type: SpotType,
       args: createSpotInputType.getFields(),
-      resolve: needsAuth(resolveCreateSpot)
+      resolve: AuthResolvers.needsAuth(SpotResolvers.create)
     },
     updateSpot: {
       type: SpotType,
       // TODO
-      resolve: resolveUpdateSpot
+      resolve: SpotResolvers.update
     },
     removeSpot: {
       type: GraphQLBoolean

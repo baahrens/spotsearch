@@ -9,7 +9,7 @@ import {
   GraphQLEnumType,
   GraphQLFloat
 } from 'graphql'
-import { resolveSpotAuthor } from '../resolvers'
+import { UserResolvers } from '../resolvers'
 import { UserType } from './userType'
 import { spotTypeValues, spotAttributeValues } from '../../data/schemas'
 
@@ -42,7 +42,7 @@ export const SpotType = new GraphQLObjectType({
     },
     author: {
       type: new GraphQLNonNull(UserType),
-      resolve: resolveSpotAuthor
+      resolve: ({ author }) => UserResolvers.findOne(author)
     },
     createdAt: {
       type: GraphQLString

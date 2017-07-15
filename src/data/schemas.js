@@ -86,7 +86,7 @@ const userSchema = new mongoose.Schema({
     type: String
   },
   zipCode: {
-    type: String, // TODO maybe regex
+    type: String
   },
   homeSpot: {
     type: mongoose.Schema.Types.ObjectId,

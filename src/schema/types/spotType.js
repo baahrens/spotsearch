@@ -84,7 +84,6 @@ export const getSpotInputType = new GraphQLInputObjectType({
 // All fields that can be specified by the client
 // for searching, filtering and sorting the spots
 // must be listed here
-// TODO allowed values for filtering/sorting
 export const getSpotsInputType = new GraphQLInputObjectType({
   name: 'getSpotsInputType',
   fields: () => ({

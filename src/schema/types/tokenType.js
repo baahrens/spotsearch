@@ -15,7 +15,7 @@ export const TokenType = new GraphQLObjectType({
   }
 })
 
-// Filds needed for authenticating
+// Fields needed for authenticating
 export const authenticateInputType = new GraphQLInputObjectType({
   name: 'authenticateInputType',
   fields: {

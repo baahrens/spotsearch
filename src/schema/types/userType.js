@@ -11,15 +11,14 @@ import { SpotType } from './spotType'
 
 // The schema representation of a user
 // Uses all fields from the Mongoose Schema
-// TODO: resolvers
 export const UserType = new GraphQLObjectType({
   name: 'UserType',
   fields: () => ({
     id: {
-      type: GraphQLID
+      type: new GraphQLNonNull(GraphQLID)
     },
     email: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     },
     firstName: {
       type: GraphQLString

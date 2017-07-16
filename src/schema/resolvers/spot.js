@@ -57,7 +57,7 @@ const findOne = (root, { id }) => Spot.findById(id)
 const update = (root, { id, data }) => Spot.update(id, data)
 
 const create = async (root, args, { user: userId }) => {
-  const user = await User.findOne({ _id: userId })
+  const user = await User.findById(userId)
   if (user) return Spot.create({ author: user._id, ...args })
 }
 

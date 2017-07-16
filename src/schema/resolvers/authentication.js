@@ -5,24 +5,21 @@ import { GraphQLError } from 'graphql';
 import { JWT_SECRET } from '../../server'
 import { User } from '../../data/database'
 
-const authenticate = async (root, { email, password }, { user: currentUser }) => {
+async function authenticate(root, { email, password }, { user: currentUser }) {
   if (currentUser) return
 
   const user = await User.findOne({ email })
-  const valid = await bcrypt.compare(password, user.password)
+  const validPassword = await bcrypt.compare(password, user.password)
 
-  if (!user || !valid) return new GraphQLError('Authentication failed')
-
-  return { token: jwt.sign(user.id, JWT_SECRET) }
+  if (user && validPassword) return { token: jwt.sign(user.id, JWT_SECRET) }
+  return new GraphQLError('Authentication failed')
 }
 
-const register = async (root, { email, password }) => {
+async function register(root, { email, password }) {
   const user = await User.findOne({ email })
-
   if (user) return new GraphQLError('E-Mail already in use')
 
   const passwordHash = await bcrypt.hash(password, 10)
-
   return User.create({ email, password: passwordHash })
 }
 
@@ -33,8 +30,4 @@ const needsAuth = func => (root, args, context) => {
   return new GraphQLError('Not authenticated')
 }
 
-export {
-  authenticate,
-  register,
-  needsAuth
-}
+export { authenticate, register, needsAuth }

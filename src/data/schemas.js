@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
-export const spotTypeValues = ['STREET', 'PARK']
-export const spotAttributeValues = [
+const spotTypeValues = ['STREET', 'PARK']
+const spotAttributeValues = [
   'STAIRS',
   'POOL',
   'KICKER'
@@ -103,9 +103,9 @@ userSchema.virtual('id').get(function () {
   return this._id.toHexString()
 })
 
-// function that can be called on every user
-userSchema.methods.checkPassword = function (password) {
-  return this.password === password
+export {
+  spotSchema,
+  userSchema,
+  spotAttributeValues,
+  spotTypeValues
 }
-
-export { spotSchema, userSchema }

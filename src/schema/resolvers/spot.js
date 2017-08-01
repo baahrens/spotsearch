@@ -1,5 +1,5 @@
 import { Spot, User } from '../../data/database'
-import { spotTypeValues, spotAttributeValues } from '../../data/schemas'
+import { spotTypeValues, spotAttributeValues } from '../../data/spotModel'
 
 const defaultFilter = {
   minRating: 0,

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import debug from 'debug'
-import { spotSchema, userSchema } from './schemas'
+import spotModel from './spotModel'
+import userModel from './userModel'
 import createFixtures from './fixtures'
 
 // The mongo url
@@ -16,8 +17,8 @@ mongoose.connect(MONGO_URL)
 const db = mongoose.connection;
 
 // Create our models, using the schemata specified in './schema'
-export const Spot = db.model('spot', spotSchema)
-export const User = db.model('user', userSchema)
+export const Spot = db.model('spot', spotModel)
+export const User = db.model('user', userModel)
 
 db.on('error', error => {
   dbDebug(`Error connecting to Mongo: ${error}`)

@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { GraphQLError } from 'graphql';
 
@@ -9,9 +8,8 @@ async function authenticate(root, { email, password }, { user: currentUser }) {
   if (currentUser) return
 
   const user = await User.findOne({ email })
-  const validPassword = await bcrypt.compare(password, user.password)
 
-  if (user && validPassword) return { token: jwt.sign(user.id, JWT_SECRET) }
+  if (user && user.authenticate(password)) return { token: jwt.sign(user.id, JWT_SECRET) }
   return new GraphQLError('Authentication failed')
 }
 
@@ -19,8 +17,7 @@ async function register(root, { email, password }) {
   const user = await User.findOne({ email })
   if (user) return new GraphQLError('E-Mail already in use')
 
-  const passwordHash = await bcrypt.hash(password, 10)
-  return User.create({ email, password: passwordHash })
+  return User.create({ email, password })
 }
 
 // wraps an resolver to check if the user is authenticated and has a valid token

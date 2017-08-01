@@ -11,7 +11,7 @@ import {
 } from 'graphql'
 import { UserResolvers } from '../resolvers'
 import { UserType } from './userType'
-import { spotTypeValues, spotAttributeValues } from '../../data/schemas'
+import { spotTypeValues, spotAttributeValues } from '../../data/spotModel'
 
 export const spotAttributesType = new GraphQLEnumType({
   name: 'SpotAttributesType',

@@ -9,7 +9,10 @@ async function authenticate(root, { email, password }, { user: currentUser }) {
 
   const user = await User.findOne({ email })
 
-  if (user && user.authenticate(password)) return { token: jwt.sign(user.id, JWT_SECRET) }
+  if (user && user.authenticate(password)) {
+    return { token: jwt.sign(user.id, JWT_SECRET) }
+  }
+
   return new GraphQLError('Authentication failed')
 }
 

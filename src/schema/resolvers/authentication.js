@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import { GraphQLError } from 'graphql';
 
 import { JWT_SECRET } from '../../server'
 import { User } from '../../data/database'
@@ -9,16 +8,16 @@ async function authenticate(root, { email, password }, { user: currentUser }) {
 
   const user = await User.findOne({ email })
 
-  if (user && user.authenticate(password)) {
-    return { token: jwt.sign(user.id, JWT_SECRET) }
+  if (!user && !user.authenticate(password)) {
+    return new Error('Authentication failed')
   }
 
-  return new GraphQLError('Authentication failed')
+  return { token: jwt.sign(user.id, JWT_SECRET) }
 }
 
 async function register(root, { email, password }) {
   const user = await User.findOne({ email })
-  if (user) return new GraphQLError('E-Mail already in use')
+  if (user) return new Error('E-Mail already in use')
 
   return User.create({ email, password })
 }
@@ -27,7 +26,7 @@ async function register(root, { email, password }) {
 // returns an error if false
 const needsAuth = func => (root, args, context) => {
   if (context.user) return func(root, args, context)
-  return new GraphQLError('Not authenticated')
+  return new Error('Not authenticated')
 }
 
 export { authenticate, register, needsAuth }
